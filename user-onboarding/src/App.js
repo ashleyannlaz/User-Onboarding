@@ -40,6 +40,7 @@ function App() {
     }) 
   }
 
+  // sends a post request
   const postNewUser = newUser => {
     axios
     .post('https://reqres.in/api/users', newUser)
@@ -50,13 +51,14 @@ function App() {
       console.log(err)
     })
     .finally(() => {
+      // sets form values to original after we submit user
       setFormValues(initialFormValues)
     })
   }
 
   const changeForm = (inputName, inputValue) => {
-    validate(inputName,inputValue)
-    setFormValues({ ...formValues, [inputName]: inputValue })
+    validate(inputName,inputValue) //invokes validate funtion below
+    setFormValues({ ...formValues, [inputName]: inputValue }) // adds values to state
   }
 
   const validate = (name, value) => {
@@ -65,10 +67,12 @@ function App() {
     .validate(value)
     .then(() => setFormErrors({...formErrors, [name]: "" ,}))
     .catch(err => setFormErrors({...formErrors, [name]: err.errors[0]
+      // catch errors and set Form errors to post
     })
     )};
 
   const formSubmit = () => {
+    //takes in values from the form and removes white space using .trim()
     const newUser = {
       username: formValues.username.trim(),
       email: formValues.email.trim(),
@@ -85,7 +89,7 @@ function App() {
     schema.isValid(formValues)
     .then(valid => {
       setDisabled(!valid);
-    });
+    }); //enables button that is disabled by default
   }, [formValues]);
 
   return (
